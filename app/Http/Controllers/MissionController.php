@@ -199,11 +199,11 @@ class MissionController extends Controller
           return response()->json(["code" => $code->code]);
         } else {
           $mission->update(['updated_at' => Carbon::now()]);
-          return response()->json(["onsite1" => $page->onsite]);
+          return response()->json(["onsite" => $page->onsite]);
         }
       } else {
         $mission->update(['updated_at' => Carbon::now()]);
-        return response()->json(["onsite2" => $page->onsite]);
+        return response()->json(["onsite" => $page->onsite]);
       }
       // } else {
       //     return response()->json($code);
