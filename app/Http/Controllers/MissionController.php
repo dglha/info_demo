@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Code;
 use App\Constants\CodeStatusConstants;
 use App\Constants\MissionStatusConstants;
+use App\Info;
 use App\Mission;
 use App\Page;
 use Carbon\Carbon;
@@ -51,8 +52,8 @@ class MissionController extends Controller
       ->orderBy('created_at', 'desc')->first();
     if ($mission) { // There is mission existed!
       $page = Page::where('id', $mission->page_id)
-        ->where('status', 1)->first();
-      return response()->json($page);
+      ->where('status', 1)->first();
+      return response()->json(["mission" => $page]);
     }
 
     $pickedPage = null;
@@ -62,7 +63,7 @@ class MissionController extends Controller
       $page = Page::where('status', 1)
         ->whereNotIn('id', $excludePageId)
         ->inRandomOrder()->first();
-      if ($page->count() == 0) {
+      if (!$page) {
         break;
       }
       $mission = Mission::where('page_id', $page->id)
@@ -109,7 +110,7 @@ class MissionController extends Controller
 
       return $newMission;
     });
-    return response()->json($pickedPage);
+    return response()->json(["mission" => $pickedPage]);
   }
 
   public function cancelMission(Request $request)
@@ -236,7 +237,7 @@ class MissionController extends Controller
       $code->status = CodeStatusConstants::USED;
       $code->save();
     });
-
-    return response()->json(["status" => "Correct code"]);
+    $info = Info::inRandomOrder()->first();
+    return response()->json(["status" => "Correct code", "info" => $info]);
   }
 }

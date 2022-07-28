@@ -16,6 +16,8 @@ class Info extends Model
         'link'
     ];
 
+    protected $hidden = ['id'];
+
     // Set incrementing to False -> Custom primary key -> Not return 0 when using Eloquent Laravel model
     public $incrementing = false;
 

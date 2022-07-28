@@ -18,6 +18,8 @@ class Page extends Model
         'traffic_remain', 'timeout'
     ];
 
+    protected $hidden = ['traffic_sum', 'traffic_per_day', 'price_per_traffic', 'traffic_remain', 'timeout', 'created_at', 'updated_at'];
+
     public $incrementing = false;
 
     protected $dates = [
