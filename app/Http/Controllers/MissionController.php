@@ -43,6 +43,21 @@ class MissionController extends Controller
     return $ip;
   }
 
+  public function getMission(Request $request)
+  {
+    $userIP = $this->getUserIpAddr();
+    $mission = Mission::where('ip', $userIP)
+      ->where('user_agent', $request->userAgent())
+      ->where('status', MissionStatusConstants::DOING)
+      ->orderBy('created_at', 'desc')->first();
+    if (!$mission) { // There is mission existed!
+      return response()->json(["error" => "No mission received"]);
+    }
+    $page = Page::where('id', $mission->page_id)
+      ->where('status', 1)->first();
+    return response()->json(["mission" => $page]);
+  }
+
   public function postMission(Request $request)
   {
     $userIP = $this->getUserIpAddr();
@@ -52,7 +67,7 @@ class MissionController extends Controller
       ->orderBy('created_at', 'desc')->first();
     if ($mission) { // There is mission existed!
       $page = Page::where('id', $mission->page_id)
-      ->where('status', 1)->first();
+        ->where('status', 1)->first();
       return response()->json(["mission" => $page]);
     }
 

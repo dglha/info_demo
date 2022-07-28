@@ -20,5 +20,6 @@ Route::get('/', function () {
 Route::get('/test', 'MissionController@test');
 Route::get('/get', 'MissionController@getData');
 Route::post('/ms', 'MissionController@postMission');
+Route::get('/ms', 'MissionController@getMission');
 Route::post('/code', 'MissionController@generateCode');
 Route::post('/key', 'MissionController@pasteKey');
